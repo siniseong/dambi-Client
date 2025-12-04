@@ -1,13 +1,14 @@
 <script setup>
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import BaseButton from './components/BaseButton.vue'
 import AppLayout from './components/AppLayout.vue'
 import SeasonalEffect from './components/effects/SeasonalEffect.vue'
+import BottomSheet from './components/BottomSheet.vue'
 import { useKakaoShare } from './composables/useKakaoShare'
+import { useCountdown } from './composables/useCountdown'
 
 const timeGreeting = computed(() => {
   const hour = new Date().getHours()
-  
   if (hour >= 5 && hour < 11) return '오늘 아침'
   if (hour >= 11 && hour < 17) return '오늘 점심'
   if (hour >= 17 && hour < 22) return '오늘 저녁'
@@ -20,6 +21,19 @@ const handleShare = () => {
     title: 'DDD - 메뉴 추천 서비스',
     description: `매일매일 고민되는 ${timeGreeting.value} 메뉴, DDD가 추천해드릴게요.`,
   })
+}
+
+const isBottomSheetOpen = ref(false)
+const { countdown, start: startCountdown, stop: stopCountdown } = useCountdown(3)
+
+const openBottomSheet = () => {
+  isBottomSheetOpen.value = true
+  startCountdown(() => window.location.href = '/')
+}
+
+const closeBottomSheet = () => {
+  isBottomSheetOpen.value = false
+  stopCountdown()
 }
 </script>
 
@@ -66,11 +80,44 @@ const handleShare = () => {
         카카오로 시작하기
       </BaseButton>
 
-      <BaseButton class="bg-[#2C2C35] hover:bg-[#3A3A45] active:bg-[#454555] text-[#b1b4bc] text-[14px] font-medium">
+      <BaseButton 
+        @click="openBottomSheet"
+        class="bg-[#2C2C35] hover:bg-[#3A3A45] active:bg-[#454555] text-[#b1b4bc] text-[14px] font-medium"
+      >
         로그인 없이 시작하기
       </BaseButton>
 
-      <p class="text-[#555] text-[11px] text-center mt-1 mb-[-4]">© 2025 DDD.</p>
+      <p class="text-[#555] text-[11px] text-center mt-1">© 2025 DDD.</p>
     </div>
+
+    <BottomSheet :isOpen="isBottomSheetOpen" @close="closeBottomSheet">
+      <div class="flex flex-col items-center py-4 mb-4">
+        <div class="relative mb-6">
+          <img 
+            src="@/assets/main-page/warning-signage .png" 
+            alt="Warning"
+            class="w-24 h-24 object-contain"
+          />
+        </div>
+        
+        <p class="text-[#888] text-sm text-center">
+          <span class="text-white font-medium">{{ countdown }}초</span> 후 게스트로 시작해요
+        </p>
+        <p class="text-[#888] text-sm text-center mb-8">
+          로그인하면 더 많은 기능을 이용할 수 있어요
+        </p>
+        
+        <div class="w-full">
+          <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
+            <template #icon>
+              <svg viewBox="0 0 32 32" class="w-5 h-5 text-[#000000]">
+                <path d="M16 4C9.925 4 5 7.736 5 12.346c0 2.95 2.03 5.55 5.08 6.96l-1.3 4.8c-.1.4.3.7.6.5l5.6-3.7c.3 0 .7.1 1.02.1 6.075 0 11-3.736 11-8.346C27 7.736 22.075 4 16 4z" fill="currentColor"/>
+              </svg>
+            </template>
+            카카오로 로그인하기
+          </BaseButton>
+        </div>
+      </div>
+    </BottomSheet>
   </AppLayout>
 </template>
