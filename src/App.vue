@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import BaseButton from './components/BaseButton.vue'
 import AppLayout from './components/AppLayout.vue'
+import SeasonalEffect from './components/effects/SeasonalEffect.vue'
 import { useKakaoShare } from './composables/useKakaoShare'
 
 const timeGreeting = computed(() => {
@@ -24,6 +25,11 @@ const handleShare = () => {
 
 <template>
   <AppLayout>
+    <SeasonalEffect />
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute inset-x-0 mx-auto top-[38%] w-[200px] h-[200px] blur-[60px] animate-aurora opacity-15 bg-[linear-gradient(45deg,#ff0080,#7928ca,#4299e1,#ff0080)] [background-size:300%_300%]"></div>
+    </div>
+
     <button 
       @click="handleShare"
       class="absolute top-4 left-4 p-2 text-[#888] hover:text-white transition-colors z-10"
@@ -38,7 +44,7 @@ const handleShare = () => {
         <img 
           src="@/assets/logo/ddd-logo.svg" 
           alt="DDD Main Logo" 
-          class="w-[280px] h-[280px] drop-shadow-2xl translate-y-10" 
+          class="w-[280px] h-[280px] drop-shadow-2xl translate-y-10 animate-float" 
         />
       </div>
       
