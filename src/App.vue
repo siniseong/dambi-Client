@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import BaseButton from './components/BaseButton.vue'
 import AppLayout from './components/AppLayout.vue'
+import { useKakaoShare } from './composables/useKakaoShare'
 
 const timeGreeting = computed(() => {
   const hour = new Date().getHours()
@@ -11,10 +12,27 @@ const timeGreeting = computed(() => {
   if (hour >= 17 && hour < 22) return '오늘 저녁'
   return '야식'
 })
+
+const { shareKakao } = useKakaoShare()
+const handleShare = () => {
+  shareKakao({
+    title: 'DDD - 메뉴 추천 서비스',
+    description: `매일매일 고민되는 ${timeGreeting.value} 메뉴, DDD가 추천해드릴게요.`,
+  })
+}
 </script>
 
 <template>
   <AppLayout>
+    <button 
+      @click="handleShare"
+      class="absolute top-4 left-4 p-2 text-[#888] hover:text-white transition-colors z-10"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z" />
+      </svg>
+    </button>
+
     <div class="flex-1 flex flex-col items-center justify-center pb-20">
       <div class="flex flex-col items-center justify-center mb-[-54px]">
         <img 
