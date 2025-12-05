@@ -31,6 +31,16 @@ export default {
           '50%': { transform: 'scale(1.05, 0.95)' },
           '75%': { transform: 'scale(0.98, 1.02)' },
         },
+        fadeInUp: {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
         glow: {
           '0%, 100%': { filter: 'drop-shadow(0 0 20px rgba(239, 136, 200, 0.3))' },
           '50%': { filter: 'drop-shadow(0 0 40px rgba(239, 136, 200, 0.6))' },
@@ -121,6 +131,7 @@ export default {
         sparkle: 'sparkle ease-in-out infinite',
         leaf: 'leaf linear infinite',
         jelly: 'jelly 2s ease-in-out infinite',
+        fadeInUp: 'fadeInUp 0.6s ease-out forwards',
         glow: 'glow 3s ease-in-out infinite',
         tilt: 'tilt 4s ease-in-out infinite',
       }
