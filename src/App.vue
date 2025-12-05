@@ -40,10 +40,11 @@ const closeBottomSheet = () => {
 <template>
   <AppLayout>
     <SeasonalEffect />
+    <!--
     <div class="absolute inset-0 overflow-hidden pointer-events-none">
       <div class="absolute inset-x-0 mx-auto top-[38%] w-[200px] h-[200px] blur-[60px] animate-aurora opacity-15 bg-[linear-gradient(45deg,#ff0080,#7928ca,#4299e1,#ff0080)] [background-size:300%_300%]"></div>
     </div>
-
+    -->
     <button 
       @click="handleShare"
       class="absolute top-4 left-4 p-2 text-[#888] hover:text-white transition-colors z-10"
@@ -53,24 +54,20 @@ const closeBottomSheet = () => {
       </svg>
     </button>
 
-    <div class="flex-1 flex flex-col items-center justify-center pb-20">
-      <div class="flex flex-col items-center justify-center mb-[-54px]">
-        <img 
-          src="@/assets/logo/ddd-logo.svg" 
-          alt="DDD Main Logo" 
-          class="w-[280px] h-[280px] drop-shadow-2xl translate-y-10 animate-float" 
-        />
-      </div>
+    <div class="flex-1 flex flex-col items-center justify-center pb-10">
+      <img 
+        src="@/assets/logo/ddd-logo.svg" 
+        alt="DDD Main Logo" 
+        class="w-[280px] h-[280px] animate-jelly -mb-24" 
+      />
       
-      <div class="text-center">
-        <p class="text-[#888] text-base font-normal leading-relaxed">
-          매일매일 고민되는 <span class="text-[#ef88c8] font-semibold">{{ timeGreeting }}</span> 메뉴,<br/>
-          DDD가 추천 해드릴게요.
-        </p>
-      </div>
+      <p class="text-[#888] text-base font-normal leading-relaxed text-center">
+        매일매일 고민되는 <span class="text-[#ef88c8] font-semibold">{{ timeGreeting }}</span> 메뉴,<br/>
+        DDD가 추천 해드릴게요.
+      </p>
     </div>
 
-    <div class="w-full flex flex-col gap-3 mb-8">
+    <div class="w-full flex flex-col gap-3">
       <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
         <template #icon>
           <svg viewBox="0 0 32 32" class="w-5 h-5 text-[#000000]">
