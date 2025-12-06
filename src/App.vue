@@ -1,19 +1,27 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import BaseButton from './components/BaseButton.vue'
 import AppLayout from './components/AppLayout.vue'
 import SeasonalEffect from './components/effects/SeasonalEffect.vue'
 import BottomSheet from './components/BottomSheet.vue'
-import DDDLogo from './logo/DDDLogo.vue'
 import { useKakaoShare } from './composables/useKakaoShare'
 import { useCountdown } from './composables/useCountdown'
+import { useTypewriter } from './composables/useTypewriter'
+
+const title1 = ref('')
+const title2 = ref('')
+const { typeText } = useTypewriter()
+
+onMounted(async () => {
+  await typeText('Daily Food🍚', title1)
+  await typeText('Randomizer,', title2)
+})
 
 const timeGreeting = computed(() => {
-  const hour = new Date().getHours()
-  if (hour >= 5 && hour < 11) return '오늘 아침'
-  if (hour >= 11 && hour < 17) return '오늘 점심'
-  if (hour >= 17 && hour < 22) return '오늘 저녁'
-  return '야식'
+  const h = new Date().getHours()
+  return h >= 5 && h < 11 ? '아침' : 
+         h >= 11 && h < 17 ? '점심' : 
+         h >= 17 && h < 22 ? '저녁' : '야식'
 })
 
 const { shareKakao } = useKakaoShare()
@@ -52,16 +60,18 @@ const closeBottomSheet = () => {
       />
     </button>
 
-    <div class="flex-1 flex flex-col items-center justify-center">
-      <div class="mb-4 select-none">
-        <DDDLogo />
-      </div>
-      
-      <p class="text-[#888] mt-4 text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:4.2s] [animation-fill-mode:forwards]">
-        매일매일 고민되는 <span class="text-[#ef88c8] font-semibold">{{ timeGreeting }}</span> 메뉴,
-      </p>
-      <p class="text-[#888] text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:4.6s] [animation-fill-mode:forwards]">
-        DDD가 추천 해드릴게요.
+    <div class="flex-1 flex flex-col items-start justify-center w-full">
+      <h1 class="text-white text-5xl font-semibold leading-tight mt-12 min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
+        {{ title1 }}
+      </h1>
+      <h1 class="text-white text-5xl font-semibold leading-tight mt-[-4px] min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
+        {{ title2 }}
+      </h1>
+      <p class="text-[#888] mt-2 text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.5s] [animation-fill-mode:forwards]">
+        매일매일 고민되는 <span class="text-white font-semibold">{{ timeGreeting }}</span> 메뉴,
+      </p>  
+      <p class="text-[#888] text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.8s] [animation-fill-mode:forwards]">
+        <span class="text-white font-semibold">ddd</span>가 추천 해드릴게요.
       </p>
     </div>
 
@@ -112,6 +122,3 @@ const closeBottomSheet = () => {
     </BottomSheet>
   </AppLayout>
 </template>
-
-<style scoped>
-</style>

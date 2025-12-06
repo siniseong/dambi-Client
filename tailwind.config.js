@@ -9,6 +9,9 @@ export default {
       fontFamily: {
         sans: ['"Pretendard"', 'sans-serif'],
         tenada: ['"Tenada"', 'sans-serif'],
+        presentation: ['"Presentation"', 'sans-serif'],
+        binggrae: ['"Binggrae"', 'sans-serif'],
+        waguri: ['"Waguri"', 'sans-serif'],
       },
       keyframes: {
         shake: {
