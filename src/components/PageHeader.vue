@@ -27,7 +27,7 @@ const goBack = () => {
     </button>
 
     <div class="absolute top-4 left-0 w-full h-10 flex items-center justify-center z-0 pointer-events-none">
-      <h2 class="text-white text-lg font-medium pointer-events-auto">{{ title }}</h2>
+      <h2 class="text-white text-base font-medium pointer-events-auto">{{ title }}</h2>
     </div>
   </div>
 </template>
