@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {
+      screens: {
+        'large': '1440px',
+        'large-phone': '430px',
+      },
       fontFamily: {
         sans: ['"Pretendard"', 'sans-serif'],
         tenada: ['"Tenada"', 'sans-serif'],
