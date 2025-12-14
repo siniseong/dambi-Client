@@ -39,7 +39,7 @@ const { countdown, start: startCountdown, stop: stopCountdown } = useCountdown(3
 
 const openBottomSheet = () => {
   isBottomSheetOpen.value = true
-  startCountdown(() => router.push('/preference-analysis'))
+  startCountdown(() => router.push('/preference-analysis-start'))
 }
 
 const closeBottomSheet = () => {

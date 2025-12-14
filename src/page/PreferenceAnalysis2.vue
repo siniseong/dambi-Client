@@ -7,26 +7,23 @@ const router = useRouter()
 const selectedIndex = ref(null)
 
 const options = [
-  '없음, 모든 음식을 먹을 수 있어요',
-  '갑각류 알레르기 (새우, 게, 가재 등)',
-  '견과류 알레르기 (땅콩, 아몬드, 호두 등)',
-  '유제품 알레르기 (우유, 치즈, 요구르트 등)'
+  '매운 음식을 전혀 못 먹어요',
+  '조금 매운 정도는 괜찮아요',
+  '보통 매운 정도를 좋아해요',
+  '아주 매운 음식을 좋아해요'
 ]
 
 const handleNext = (index) => {
   console.log('Selected:', index, options[index])
-  router.push({ name: 'preference-analysis-2' })
 }
-</script>
-
-<template>
+</script><template>
   <AnalysisPage
     page-title="음식 맞춤 추천 취향 분석"
-    :question-number="1"
-    question-text="알레르기나 식이 제한으로 인해 못 먹는 음식이 있으신가요?"
+    :question-number="2"
+    question-text="항목에서 매운 음식에 대한 선호도를 골라주세요."
     :options="options"
-    :current-page="1"
-    :total-pages="3"
+    :current-page="2"
+    :total-pages="2"
     v-model="selectedIndex"
     @next="handleNext"
   />
