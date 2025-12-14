@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../page/HomeView.vue'
-import AiQuestion from '../page/AiQuestion.vue'
+import PreferenceAnalysis from '../page/PreferenceAnalysis.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,9 +11,9 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/ai-question',
-      name: 'ai-question',
-      component: AiQuestion
+      path: '/preference-analysis',
+      name: 'preference-analysis',
+      component: PreferenceAnalysis
     }
   ]
 })

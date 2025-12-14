@@ -1,43 +1,80 @@
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import BaseButton from '../components/BaseButton.vue'
-import AppLayout from '../components/AppLayout.vue'
-import PageHeader from '../components/PageHeader.vue'
-import SeasonalEffect from '../components/effects/SeasonalEffect.vue'
+import { computed } from 'vue'
+import AppLayout from '../AppLayout.vue'
+import PageHeader from '../PageHeader.vue'
+import SeasonalEffect from '../effects/SeasonalEffect.vue'
 
-const router = useRouter()
-const selectedIndex = ref(null)
+const props = defineProps({
+  pageTitle: {
+    type: String,
+    required: true
+  },
+  questionNumber: {
+    type: Number,
+    required: true
+  },
+  questionText: {
+    type: String,
+    required: true
+  },
+  options: {
+    type: Array,
+    required: true,
+    validator: (value) => Array.isArray(value) && value.length > 0
+  },
+  currentPage: {
+    type: Number,
+    required: true
+  },
+  totalPages: {
+    type: Number,
+    required: true
+  },
+  modelValue: {
+    type: Number,
+    default: null
+  },
+  required: {
+    type: Boolean,
+    default: true
+  },
+  nextButtonText: {
+    type: String,
+    default: '다음'
+  }
+})
 
-const options = [
-  '없음, 모든 음식을 먹을 수 있어요',
-  '갑각류 알레르기 (새우, 게, 가재 등)',
-  '견과류 알레르기 (땅콩, 아몬드, 호두 등)',
-  '유제품 알레르기 (우유, 치즈, 요구르트 등)'
-]
+const emit = defineEmits(['update:modelValue', 'next'])
+
+const selectedIndex = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
 
 const handleSelect = (index) => {
   selectedIndex.value = selectedIndex.value === index ? null : index
 }
 
 const goNext = () => {
-  if (selectedIndex.value === null) return
-  console.log('Selected:', selectedIndex.value, options[selectedIndex.value])  
+  if (selectedIndex.value === null && props.required) return
+  emit('next', selectedIndex.value)
 }
 </script>
 
 <template>
   <AppLayout>
     <SeasonalEffect />
-    <PageHeader title="음식 맞춤 추천 취향 분석" />
+    <PageHeader :title="pageTitle" />
 
     <div class="flex-1 flex flex-col w-full pt-12">
       <div class="flex-1 flex flex-col gap-4">
-        <h1 class="text-white text-4xl font-bold text-left break-keep" style="font-family: 'SlowGothic', sans-serif; line-height: 1.2; letter-spacing: -0.02em;">
-          <span class="text-[#D3F921]">Q1.</span> 알레르기나 식이 제한으로 인해 못 먹는 음식이 있으신가요?
+        <h1 class="question-title text-white text-4xl font-bold text-left break-keep">
+          <span class="text-[#D3F921]">{{ questionNumber }}.</span> {{ questionText }}
         </h1>
 
-        <div class="text-gray-300 font-medium text-sm mt-1 mb-[-4px]"><span class="text-red-500">*</span> 아래에서 하나를 선택해주세요.</div>
+        <div v-if="required" class="text-gray-300 font-medium text-sm mt-1 mb-[-4px]">
+          <span class="text-red-500">*</span> 아래에서 하나를 선택해주세요.
+        </div>
         <div class="w-full flex flex-col gap-3">
           <button 
             v-for="(option, index) in options"
@@ -84,17 +121,16 @@ const goNext = () => {
     </div>
 
     <div class="text-white/60 text-sm text-center my-4">
-      <span class="text-[#D3F921]">1</span>/3
+      <span class="text-[#D3F921]">{{ currentPage }}</span>/{{ totalPages }}
     </div>
 
-    <BaseButton 
+    <button 
       @click="goNext" 
-      :disabled="selectedIndex === null"
-      class="bg-[#D3F921] hover:bg-[#E5FF3A] active:bg-[#B8D91D] text-[#1a1a1a] text-[15px] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+      :disabled="selectedIndex === null && required"
+      class="w-full h-[50px] rounded-xl flex items-center justify-center gap-2 transition-colors duration-200 font-semibold bg-[#D3F921] hover:bg-[#E5FF3A] active:bg-[#B8D91D] text-[#1a1a1a] text-[15px] disabled:opacity-50 disabled:cursor-not-allowed"
     >
-      다음
-    </BaseButton>
-
+      {{ nextButtonText }}
+    </button>
   </AppLayout>
 </template>
 
@@ -104,9 +140,16 @@ const goNext = () => {
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/neurimboGothicRegular.woff2') format('woff2');
 }
 
+.question-title {
+    font-family: 'SlowGothic', sans-serif;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+
 @media (max-width: 359px) {
   .option-text {
     font-size: 0.875rem;
   }
 }
 </style>
+
