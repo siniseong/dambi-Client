@@ -124,6 +124,10 @@ export default {
             opacity: '0.2',
           },
         },
+        'bounce-slow': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
       },
       animation: {
         shake: 'shake 0.1s infinite',
@@ -138,6 +142,7 @@ export default {
         fadeInUp: 'fadeInUp 0.6s ease-out forwards',
         glow: 'glow 3s ease-in-out infinite',
         tilt: 'tilt 4s ease-in-out infinite',
+        'bounce-slow': 'bounce-slow 2s ease-in-out infinite',
       }
     },
   },
