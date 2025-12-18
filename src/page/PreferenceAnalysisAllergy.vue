@@ -4,62 +4,40 @@ import { useRouter } from 'vue-router'
 import AppLayout from '../components/AppLayout.vue'
 import PageHeader from '../components/PageHeader.vue'
 import SeasonalEffect from '../components/effects/SeasonalEffect.vue'
-import CloseIconSmall from '../components/icons/CloseIconSmall.vue'
 
 const router = useRouter()
 const selectedAllergies = ref([])
 
 const allergyTypes = [
-  '난류(계란)',
-  '우유',
-  '메밀',
-  '땅콩',
-  '대두',
-  '밀',
-  '고등어',
-  '게',
-  '새우',
-  '돼지고기',
-  '복숭아',
-  '토마토',
-  '아황산류',
-  '호두',
-  '닭고기',
-  '쇠고기',
-  '오징어',
-  '조개류(굴, 전복, 홍합 등)'
+  { name: '난류(계란)', emoji: '🥚' },
+  { name: '우유', emoji: '🥛' },
+  { name: '메밀', emoji: '🌾' },
+  { name: '땅콩', emoji: '🥜' },
+  { name: '대두', emoji: '🫘' },
+  { name: '밀', emoji: '🌾' },
+  { name: '고등어', emoji: '🐟' },
+  { name: '게', emoji: '🦀' },
+  { name: '새우', emoji: '🦐' },
+  { name: '돼지고기', emoji: '🐷' },
+  { name: '복숭아', emoji: '🍑' },
+  { name: '토마토', emoji: '🍅' },
+  { name: '아황산류', emoji: '⚗️' },
+  { name: '호두', emoji: '🥜' },
+  { name: '닭고기', emoji: '🐔' },
+  { name: '쇠고기', emoji: '🐄' },
+  { name: '오징어', emoji: '🦑' },
+  { name: '조개류(굴, 전복, 홍합 등)', emoji: '🦪' }
 ]
 
 const toggleAllergy = (allergy) => {
-  const index = selectedAllergies.value.indexOf(allergy)
+  const index = selectedAllergies.value.indexOf(allergy.name)
   if (index > -1) {
     selectedAllergies.value.splice(index, 1)
   } else {
-    selectedAllergies.value.push(allergy)
+    selectedAllergies.value.push(allergy.name)
   }
 }
 
-const getSelectedButtonClass = (index) => {
-  const colorIndex = index % 3
-  if (colorIndex === 0) {
-    return 'bg-[#FFAB2C] text-white'
-  } else if (colorIndex === 1) {
-    return 'bg-[#282AE1] text-white'
-  } else {
-    return 'bg-[#D3F921] text-[#1a1a1a]'
-  }
-}
-
-const getUnselectedButtonClass = (index) => {
-  const colorIndex = index % 3
-  if (colorIndex === 0) {
-    return 'bg-[#101013] text-white border border-[#FFAB2C]'
-  } else if (colorIndex === 1) {
-    return 'bg-[#101013] text-white border border-[#282AE1]'
-  } else {
-    return 'bg-[#101013] text-white border border-[#D3F921]'
-  }
-}
 
 const handleConfirm = () => {
   if (selectedAllergies.value.length === 0) return
@@ -72,43 +50,36 @@ const handleConfirm = () => {
     <SeasonalEffect />
     <PageHeader title="음식 맞춤 추천 취향 분석"/>
 
-    <div class="flex-1 flex flex-col w-full pt-12">
-      <div class="flex-1 flex flex-col gap-4">
-        <div class="flex flex-col items-center gap-2">
-          <p class="text-3xl text-[#D3F921] font-bold text-center" style="font-family: 'Poppins', sans-serif;">
-            Q.1-1.
+    <div class="flex-1 flex flex-col w-full mt-16">
+      <div class="flex flex-col items-start gap-2 w-full max-w-[500px]">
+        <div class="text-white text-3xl font-bold text-left break-keep">
+          <p>
+            <span class="text-[#D3F921] whitespace-nowrap" style="font-family: 'Poppins', sans-serif;"></span> 해당하는 알레르기
           </p>
-          <div class="text-white text-3xl font-bold text-center break-keep">
-            <p>가지고 계신 알레르기를</p>
-            <p>모두 알려주세요.</p>
-          </div>
+          <p>항목을 모두 선택해주세요.</p>
         </div>
-
-        <div class="flex flex-wrap gap-3">
+        
+        <div class="flex flex-wrap gap-2.5 mt-5">
           <button
             v-for="(allergy, index) in allergyTypes"
-            :key="allergy"
+            :key="allergy.name"
             type="button"
             @click="toggleAllergy(allergy)"
-            class="h-10 px-4 rounded-full flex items-center gap-2 transition-all duration-200 active:scale-[0.97] whitespace-nowrap"
+            class="h-10 px-4 rounded-full flex items-center gap-2 active:scale-[0.97] transition-all duration-200"
             :class="
-              selectedAllergies.includes(allergy)
-                ? getSelectedButtonClass(index)
-                : getUnselectedButtonClass(index)
+              selectedAllergies.includes(allergy.name)
+                ? 'bg-[#D3F921] text-[#1a1a1a]'
+                : 'bg-gray-800/50 text-white'
             "
           >
-            <span class="text-sm font-medium">{{ index + 1 }}. {{ allergy }}</span>
-            <CloseIconSmall 
-              v-if="selectedAllergies.includes(allergy)"
-              class="flex-shrink-0"
-            />
+            <span class="text-base">{{ allergy.emoji }}</span>
+            <span class="text-sm font-medium">{{ allergy.name }}</span>
           </button>
         </div>
       </div>
-    </div>
-
-    <div class="text-white/60 text-sm text-center my-4">
-      <span class="text-[#D3F921]">1</span>/2
+      <p class="text-gray-400 text-sm mb-6 text-center mt-auto">
+        <span class="text-[#D3F921]">1</span>/2
+      </p>
     </div>
 
     <button
