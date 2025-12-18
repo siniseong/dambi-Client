@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../page/HomeView.vue'
 import PreferenceAnalysisStart from '../page/PreferenceAnalysisStart.vue'
 import PreferenceAnalysis from '../page/PreferenceAnalysis.vue'
+import PreferenceAnalysisAllergy from '../page/PreferenceAnalysisAllergy.vue'
 import PreferenceAnalysis2 from '../page/PreferenceAnalysis2.vue'
 
 const router = createRouter({
@@ -21,6 +22,11 @@ const router = createRouter({
       path: '/preference-analysis',
       name: 'preference-analysis',
       component: PreferenceAnalysis
+    },
+    {
+      path: '/preference-analysis-allergy',
+      name: 'preference-analysis-allergy',
+      component: PreferenceAnalysisAllergy
     },
     {
       path: '/preference-analysis-2',
