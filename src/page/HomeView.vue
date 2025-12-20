@@ -14,7 +14,7 @@ const showMainPage = ref(false)
 
 const titleClass = computed(() => 'text-black text-5xl font-semibold leading-none transition-all duration-1000 ease-in-out font-poppins')
 const mainTitleClass = computed(() => 'text-black text-2xl font-semibold leading-tight text-center z-10 animate-fadeInUp font-poppins')
-const contentTitleClass = computed(() => 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight font-poppins whitespace-nowrap')
+const contentTitleClass = computed(() => 'text-4xl md:text-5xl font-bold text-black leading-tight font-poppins')
 
 onMounted(() => {
   setTimeout(() => {
@@ -40,9 +40,9 @@ onMounted(() => {
 <template>
   <AppLayout>
     <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div class="absolute -top-1/4 -left-1/4 w-full h-full bg-[#B3E2FF] rounded-full opacity-30 blur-[120px]"></div>
-      <div class="absolute top-1/4 -right-1/4 w-3/4 h-3/4 bg-[#B3E2FF] rounded-full opacity-25 blur-[100px]"></div>
-      <div class="absolute bottom-1/4 left-1/4 w-2/3 h-2/3 bg-[#B3E2FF] rounded-full opacity-20 blur-[110px]"></div>
+      <div class="absolute -top-1/4 -left-1/4 w-3/4 h-3/4 bg-[#B3E2FF] rounded-full opacity-30 blur-[80px]"></div>
+      <div class="absolute top-1/4 -right-1/4 w-1/2 h-1/2 bg-[#B3E2FF] rounded-full opacity-25 blur-[70px]"></div>
+      <div class="absolute bottom-1/4 left-1/4 w-1/2 h-1/2 bg-[#B3E2FF] rounded-full opacity-20 blur-[75px]"></div>
     </div>
     <SeasonalEffect />
     
@@ -88,13 +88,13 @@ onMounted(() => {
         {{ mergedText }}<span class="text-[#B3E2FF]">.</span>
       </h1>
 
-      <div class="flex-1 flex flex-col items-center justify-center w-full relative z-10 gap-6 px-2 sm:px-4">
-        <div class="text-center animate-fadeInUp w-full overflow-hidden">
-          <h2 :class="contentTitleClass" class="inline-block">
+      <div class="flex-1 flex flex-col items-center justify-center w-full relative z-10 gap-6 px-4">
+        <div class="text-center animate-fadeInUp w-full">
+          <h2 :class="contentTitleClass">
             복잡한 약속 잡기
           </h2>
-          <p :class="contentTitleClass" class="inline-block">
-            <span class="animate-gradient-shift">🔗 링크</span> 하나면 끝<span class="text-[#B3E2FF]">.</span><span class="cursor-blink">|</span>
+          <p :class="contentTitleClass">
+            <span class="animate-gradient-shift">🔗 링크</span> 하나면 끝<span class="text-black">.</span>
           </p>
         </div>
       </div>
@@ -135,28 +135,12 @@ onMounted(() => {
 
 .animate-gradient-shift {
   display: inline-block;
+  font-weight: bold;
   background: linear-gradient(90deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #1D4ED8 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-size: 200% auto;
   animation: gradientShift 6s ease-in-out infinite;
-  font-weight: bold;
-}
-
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
-
-.cursor-blink {
-  display: inline-block;
-  color: #B3E2FF;
-  animation: blink 1s step-end infinite;
-  margin-left: 2px;
 }
 </style>
