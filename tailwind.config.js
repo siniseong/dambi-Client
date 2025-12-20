@@ -13,6 +13,7 @@ export default {
       fontFamily: {
         sans: ['"Pretendard"', 'sans-serif'],
         tenada: ['"Tenada"', 'sans-serif'],
+        poppins: ['"Poppins"', 'sans-serif'],
       },
       keyframes: {
         shake: {
@@ -128,6 +129,24 @@ export default {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-20px)' },
         },
+        slideInFromLeft: {
+          '0%': {
+            opacity: '0',
+            transform: 'translateX(-100px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateX(0)',
+          },
+        },
+        gradientShift: {
+          '0%, 100%': {
+            backgroundPosition: '0% 50%',
+          },
+          '50%': {
+            backgroundPosition: '100% 50%',
+          },
+        },
       },
       animation: {
         shake: 'shake 0.1s infinite',
@@ -143,6 +162,8 @@ export default {
         glow: 'glow 3s ease-in-out infinite',
         tilt: 'tilt 4s ease-in-out infinite',
         'bounce-slow': 'bounce-slow 2s ease-in-out infinite',
+        'slide-in-left': 'slideInFromLeft 0.8s ease-out forwards',
+        'gradient-shift': 'gradientShift 3s ease infinite',
       }
     },
   },

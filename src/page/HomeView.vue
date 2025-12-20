@@ -1,126 +1,162 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted, computed } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import AppLayout from '../components/AppLayout.vue'
 import SeasonalEffect from '../components/effects/SeasonalEffect.vue'
-import BottomSheet from '../components/BottomSheet.vue'
-import { useKakaoShare } from '../composables/useKakaoShare'
-import { useCountdown } from '../composables/useCountdown'
-import { useTypewriter } from '../composables/useTypewriter'
 
-const router = useRouter()
-const title1 = ref('')
-const title2 = ref('')
-const { typeText } = useTypewriter()
+const meetText = ref('meet')
+const storyText = ref('story')
+const mergedText = ref('')
+const showMerged = ref(false)
+const showMeet = ref(false)
+const showStory = ref(false)
+const showMainPage = ref(false)
 
-onMounted(async () => {
-  await typeText('Daily Food🍚', title1)
-  await typeText('Randomizer,', title2)
+const titleClass = computed(() => 'text-black text-5xl font-semibold leading-none transition-all duration-1000 ease-in-out font-poppins')
+const mainTitleClass = computed(() => 'text-black text-2xl font-semibold leading-tight text-center z-10 animate-fadeInUp font-poppins')
+const contentTitleClass = computed(() => 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-black leading-tight font-poppins whitespace-nowrap')
+
+onMounted(() => {
+  setTimeout(() => {
+    showMeet.value = true
+  }, 200)
+  
+  setTimeout(() => {
+    showStory.value = true
+  }, 600)
+  
+  setTimeout(() => {
+    showMerged.value = true
+    setTimeout(() => {
+      mergedText.value = 'meetory'
+      setTimeout(() => {
+        showMainPage.value = true
+      }, 800)
+    }, 600)
+  }, 2000)
 })
-
-const timeGreeting = computed(() => {
-  const h = new Date().getHours()
-  return h >= 5 && h < 11 ? '아침' : 
-         h >= 11 && h < 17 ? '점심' : 
-         h >= 17 && h < 22 ? '저녁' : '야식'
-})
-
-const { shareKakao } = useKakaoShare()
-const handleShare = () => {
-  shareKakao({
-    title: 'DDD - 메뉴 추천 서비스',
-    description: `매일매일 고민되는 ${timeGreeting.value} 메뉴, DDD가 추천해드릴게요.`,
-  })
-}
-
-const isBottomSheetOpen = ref(false)
-const { countdown, start: startCountdown, stop: stopCountdown } = useCountdown(3)
-
-const openBottomSheet = () => {
-  isBottomSheetOpen.value = true
-  startCountdown(() => router.push('/preference-analysis-start'))
-}
-
-const closeBottomSheet = () => {
-  isBottomSheetOpen.value = false
-  stopCountdown()
-}
 </script>
 
 <template>
   <AppLayout>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      <div class="absolute -top-1/4 -left-1/4 w-full h-full bg-[#B3E2FF] rounded-full opacity-30 blur-[120px]"></div>
+      <div class="absolute top-1/4 -right-1/4 w-3/4 h-3/4 bg-[#B3E2FF] rounded-full opacity-25 blur-[100px]"></div>
+      <div class="absolute bottom-1/4 left-1/4 w-2/3 h-2/3 bg-[#B3E2FF] rounded-full opacity-20 blur-[110px]"></div>
+    </div>
     <SeasonalEffect />
-    <button 
-      @click="handleShare"
-      class="absolute top-4 left-4 p-2 z-10 group"
-    >
-      <img 
-        src="@/assets/main-page/share-icon.svg" 
-        alt="Share" 
-        class="w-6 h-6 transition-all duration-200 group-hover:brightness-0 group-hover:invert" 
-      />
-    </button>
-
-    <div class="flex-1 flex flex-col items-start justify-center w-full">
-      <h1 class="text-white text-5xl font-semibold leading-tight mt-12 min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
-        {{ title1 }}
-      </h1>
-      <h1 class="text-white text-5xl font-semibold leading-tight mt-[-4px] min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
-        {{ title2 }}
-      </h1>
-      <p class="text-[#888] mt-2 text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.5s] [animation-fill-mode:forwards]">
-        매일매일 고민되는 <span class="text-white font-semibold">{{ timeGreeting }}</span> 메뉴,
-      </p>  
-      <p class="text-[#888] text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.8s] [animation-fill-mode:forwards]">
-        <span class="text-[#2F9266] font-semibold">DDD</span>가 추천 해드릴게요.
-      </p>
-    </div>
-
-    <div class="w-full flex flex-col gap-3">
-      <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
-        <template #icon>
-          <img src="@/assets/main-page/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
-        </template>
-        카카오로 시작하기
-      </BaseButton>
-
-      <BaseButton 
-        @click="openBottomSheet"
-        class="bg-[#2C2C35] hover:bg-[#3A3A45] active:bg-[#454555] text-[#b1b4bc] text-[14px] font-medium"
-      >
-        로그인 없이 시작하기
-      </BaseButton>
-
-      <p class="text-[#555] text-[11px] text-center mt-1">© 2025 DDD.</p>
-    </div>
-
-    <BottomSheet :isOpen="isBottomSheetOpen" @close="closeBottomSheet">
-      <div class="flex flex-col items-center py-4">
-        <div class="relative mb-6">
-          <img 
-            src="@/assets/main-page/warning-signage .png" 
-            alt="Warning"
-            class="w-24 h-24 object-contain"
-          />
+    
+    <div v-if="!showMainPage" class="flex-1 flex flex-col items-center justify-center w-full relative z-10">
+      <div class="relative min-h-[1.2em] text-center w-full">
+        <div 
+          v-if="!mergedText"
+          class="flex flex-col items-center gap-0 transition-all duration-1000 ease-in-out"
+          :class="{ 'animate-mergeWords': showMerged }"
+        >
+          <h1 
+            :class="[
+              titleClass,
+              showMeet && !showMerged ? 'animate-slide-in-left' : '',
+              { 'animate-mergeMeet': showMerged },
+              !showMeet ? 'opacity-0 -translate-x-[100px]' : ''
+            ]"
+          >
+            {{ meetText }}
+          </h1>
+          <h1 
+            :class="[
+              titleClass,
+              showStory && !showMerged ? 'animate-slide-in-left' : '',
+              { 'animate-mergeStory': showMerged },
+              !showStory ? 'opacity-0 -translate-x-[100px]' : ''
+            ]"
+          >
+            {{ storyText }}
+          </h1>
         </div>
-        
-        <p class="text-[#888] text-sm text-center">
-          <span class="text-white font-medium">{{ countdown }}초</span> 후 게스트로 시작해요
-        </p>
-        <p class="text-[#888] text-sm text-center mb-8">
-          로그인하면 더 많은 기능을 이용할 수 있어요
-        </p>
-        
-        <div class="w-full">
-          <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
-            <template #icon>
-              <img src="@/assets/main-page/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
-            </template>
-            카카오로 시작하기
-          </BaseButton>
+        <h1 
+          v-if="mergedText && !showMainPage"
+          class="text-black text-5xl font-semibold leading-tight animate-fadeInUp text-center font-poppins"
+        >
+          {{ mergedText }}<span class="text-[#B3E2FF]">.</span>
+        </h1>
+      </div>
+    </div>
+
+    <template v-if="showMainPage">
+      <h1 :class="[mainTitleClass, 'absolute top-5 left-0 right-0']">
+        {{ mergedText }}<span class="text-[#B3E2FF]">.</span>
+      </h1>
+
+      <div class="flex-1 flex flex-col items-center justify-center w-full relative z-10 gap-6 px-2 sm:px-4">
+        <div class="text-center animate-fadeInUp w-full overflow-hidden">
+          <h2 :class="contentTitleClass" class="inline-block">
+            복잡한 약속 잡기
+          </h2>
+          <p :class="contentTitleClass" class="inline-block">
+            <span class="animate-gradient-shift">🔗 링크</span> 하나면 끝<span class="text-[#B3E2FF]">.</span><span class="cursor-blink">|</span>
+          </p>
         </div>
       </div>
-    </BottomSheet>
+        
+      <div 
+        class="w-full transition-opacity duration-300 relative z-10 animate-fadeInUp"
+      >
+        <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
+          <template #icon>
+            <img src="@/assets/main-page/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
+          </template>
+          카카오로 시작하기
+        </BaseButton>
+        <p class="text-center text-gray-500 text-xs mt-4">Developed by siniseong</p>
+      </div>
+    </template>
   </AppLayout>
 </template>
+
+<style scoped>
+@keyframes gradientShift {
+  0% {
+    background-position: 0% center;
+  }
+  25% {
+    background-position: 50% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  75% {
+    background-position: 50% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+.animate-gradient-shift {
+  display: inline-block;
+  background: linear-gradient(90deg, #2563EB 0%, #3B82F6 25%, #60A5FA 50%, #3B82F6 75%, #1D4ED8 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: gradientShift 6s ease-in-out infinite;
+  font-weight: bold;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.cursor-blink {
+  display: inline-block;
+  color: #B3E2FF;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+</style>
