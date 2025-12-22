@@ -115,6 +115,22 @@ export default {
             opacity: '0',
           },
         },
+        'scroll-up': {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(-50%)',
+          },
+        },
+        'scroll-down': {
+          '0%': {
+            transform: 'translateY(-50%)',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+          },
+        },
       },
       animation: {
         snowfall: 'snowfall linear infinite',
@@ -125,6 +141,8 @@ export default {
         'slide-in-left': 'slideInFromLeft 0.8s ease-out forwards',
         'gradient-shift': 'gradientShift 6s ease-in-out infinite',
         'blink': 'blink 1s step-end infinite',
+        'scroll-up': 'scroll-up 15s linear infinite',
+        'scroll-down': 'scroll-down 15s linear infinite',
       }
     },
   },
