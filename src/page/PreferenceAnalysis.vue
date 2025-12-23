@@ -3,7 +3,6 @@
   import { useRouter } from 'vue-router'
   import AppLayout from '../components/AppLayout.vue'
   import PageHeader from '../components/PageHeader.vue'
-  import SeasonalEffect from '../components/effects/SeasonalEffect.vue'
   import CheckIcon from '../components/icons/CheckIcon.vue'
   import CloseIcon from '../components/icons/CloseIcon.vue'
   
@@ -55,7 +54,6 @@
   
   <template>
     <AppLayout>
-      <SeasonalEffect />
       <PageHeader title="음식 맞춤 추천 취향 분석"/>
   
       <div class="flex-1 flex flex-col justify-center">
