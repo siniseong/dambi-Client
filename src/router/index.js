@@ -1,19 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../page/HomeView.vue'
-import PreferenceAnalysis from '../page/PreferenceAnalysis.vue'
+import LandingView from '../page/LandingView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'landing',
+      component: LandingView
     },
     {
-      path: '/preference-analysis',
-      name: 'preference-analysis',
-      component: PreferenceAnalysis
+      path: '/home',
+      name: 'home',
+      component: HomeView
     }
   ]
 })

@@ -19,7 +19,7 @@ const goBack = () => {
   <div>
     <button 
       @click="goBack"
-      class="absolute top-4 left-4 p-2 z-10 text-gray-900 hover:text-gray-600 transition-colors"
+      class="absolute top-4 left-2 p-2 z-10 text-gray-900 hover:text-gray-600 transition-colors"
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
