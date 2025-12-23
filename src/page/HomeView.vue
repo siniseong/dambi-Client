@@ -1,126 +1,139 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import AppLayout from '../components/AppLayout.vue'
-import SeasonalEffect from '../components/effects/SeasonalEffect.vue'
-import BottomSheet from '../components/BottomSheet.vue'
-import { useKakaoShare } from '../composables/useKakaoShare'
-import { useCountdown } from '../composables/useCountdown'
-import { useTypewriter } from '../composables/useTypewriter'
+import handShakeImg from '@/assets/home/hand_shake.png'
+import dayCheckImg from '@/assets/home/day_check.png'
+import mapPersonImg from '@/assets/home/map_person.png'
+import groupImg from '@/assets/home/group.png'
+import partyImg from '@/assets/home/party.png'
+import phoneImg from '@/assets/home/phone.png'
+import linkImg from '@/assets/home/link.png'
+import beerImg from '@/assets/home/beer.png'
 
-const router = useRouter()
-const title1 = ref('')
-const title2 = ref('')
-const { typeText } = useTypewriter()
+const showMainPage = ref(false)
+const textRef = ref(null)
+const marqueeRef = ref(null)
+const gradientRef = ref(null)
 
-onMounted(async () => {
-  await typeText('Daily Food🍚', title1)
-  await typeText('Randomizer,', title2)
-})
+const leftMarqueeColors = ['#6B5F9F', '#E67A9B', '#E6B84D', '#5AA3CC']
+const rightMarqueeColors = ['#6BA87A', '#E69A4D', '#9D5FCC', '#CC5F5F']
 
-const timeGreeting = computed(() => {
-  const h = new Date().getHours()
-  return h >= 5 && h < 11 ? '아침' : 
-         h >= 11 && h < 17 ? '점심' : 
-         h >= 17 && h < 22 ? '저녁' : '야식'
-})
+const leftMarqueeImages = [handShakeImg, dayCheckImg, mapPersonImg, groupImg]
+const rightMarqueeImages = [partyImg, phoneImg, linkImg, beerImg]
 
-const { shareKakao } = useKakaoShare()
-const handleShare = () => {
-  shareKakao({
-    title: 'DDD - 메뉴 추천 서비스',
-    description: `매일매일 고민되는 ${timeGreeting.value} 메뉴, DDD가 추천해드릴게요.`,
+const updateMarqueeHeight = () => {
+  if (!textRef.value || !marqueeRef.value) return
+
+  const h1 = textRef.value.querySelector('h1')
+  const h2 = textRef.value.querySelector('h2')
+  const container = marqueeRef.value.parentElement
+  const containerRect = container.getBoundingClientRect()
+
+  if (h1) {
+    const h1Bottom = h1.getBoundingClientRect().bottom - containerRect.top
+    const marqueeHeight = h1Bottom - 15
+    marqueeRef.value.style.height = `${marqueeHeight}px`
+
+    if (h2 && gradientRef.value) {
+      const h2Top = h2.getBoundingClientRect().top - containerRect.top
+      const offset = 120
+      gradientRef.value.style.height = `${Math.max(0, marqueeHeight - h2Top + offset)}px`
+    }
+  } else {
+    const textBottom = textRef.value.getBoundingClientRect().bottom - containerRect.top
+    marqueeRef.value.style.height = `${textBottom + 20}px`
+  }
+}
+
+onMounted(() => {
+  showMainPage.value = true
+  nextTick(() => {
+    updateMarqueeHeight()
+    window.addEventListener('resize', updateMarqueeHeight)
   })
-}
+})
 
-const isBottomSheetOpen = ref(false)
-const { countdown, start: startCountdown, stop: stopCountdown } = useCountdown(3)
+onUnmounted(() => {
+  window.removeEventListener('resize', updateMarqueeHeight)
+})
 
-const openBottomSheet = () => {
-  isBottomSheetOpen.value = true
-  startCountdown(() => router.push('/preference-analysis-start'))
-}
+const rightMarqueeScaleClasses = ['scale-125', 'scale-150', 'scale-125', 'scale-125']
 
-const closeBottomSheet = () => {
-  isBottomSheetOpen.value = false
-  stopCountdown()
+const getMarqueeImageClass = (index, images, scaleClasses = null) => {
+  const imageIndex = index % images.length
+  const baseClasses = 'object-contain drop-shadow-lg'
+  const scaleClass = scaleClasses ? scaleClasses[imageIndex] : 'scale-125'
+  
+  return `w-full h-auto ${baseClasses} absolute bottom-0 ${scaleClass}`
 }
 </script>
 
 <template>
   <AppLayout>
-    <SeasonalEffect />
-    <button 
-      @click="handleShare"
-      class="absolute top-4 left-4 p-2 z-10 group"
-    >
-      <img 
-        src="@/assets/main-page/share-icon.svg" 
-        alt="Share" 
-        class="w-6 h-6 transition-all duration-200 group-hover:brightness-0 group-hover:invert" 
-      />
-    </button>
-
-    <div class="flex-1 flex flex-col items-start justify-center w-full">
-      <h1 class="text-white text-5xl font-semibold leading-tight mt-12 min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
-        {{ title1 }}
-      </h1>
-      <h1 class="text-white text-5xl font-semibold leading-tight mt-[-4px] min-h-[1.2em]" style="font-family: 'Poppins', sans-serif;">
-        {{ title2 }}
-      </h1>
-      <p class="text-[#888] mt-2 text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.5s] [animation-fill-mode:forwards]">
-        매일매일 고민되는 <span class="text-white font-semibold">{{ timeGreeting }}</span> 메뉴,
-      </p>  
-      <p class="text-[#888] text-base font-medium leading-relaxed text-center opacity-0 animate-fadeInUp [animation-delay:2.8s] [animation-fill-mode:forwards]">
-        <span class="text-[#2F9266] font-semibold">DDD</span>가 추천 해드릴게요.
-      </p>
-    </div>
-
-    <div class="w-full flex flex-col gap-3">
-      <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
-        <template #icon>
-          <img src="@/assets/main-page/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
-        </template>
-        카카오로 시작하기
-      </BaseButton>
-
-      <BaseButton 
-        @click="openBottomSheet"
-        class="bg-[#2C2C35] hover:bg-[#3A3A45] active:bg-[#454555] text-[#b1b4bc] text-[14px] font-medium"
+    <template v-if="showMainPage">
+      <div 
+        class="w-full h-full flex flex-col transition-opacity duration-300 relative z-10 animate-fadeInUp"
       >
-        로그인 없이 시작하기
-      </BaseButton>
-
-      <p class="text-[#555] text-[11px] text-center mt-1">© 2025 DDD.</p>
-    </div>
-
-    <BottomSheet :isOpen="isBottomSheetOpen" @close="closeBottomSheet">
-      <div class="flex flex-col items-center py-4">
-        <div class="relative mb-6">
-          <img 
-            src="@/assets/main-page/warning-signage .png" 
-            alt="Warning"
-            class="w-24 h-24 object-contain"
-          />
+        <div class="flex-1 flex flex-col relative min-h-0">
+          <div ref="marqueeRef" class="absolute top-0 left-0 right-0 flex flex-col w-full pointer-events-none z-0">
+            <div class="flex gap-3 w-full h-full relative">
+              <div class="flex-1 h-full overflow-hidden">
+                <div class="flex flex-col gap-3 animate-scroll-up">
+                  <template v-for="(color, index) in leftMarqueeColors.concat(leftMarqueeColors)" :key="index">
+                    <div 
+                      class="flex-shrink-0 h-52 rounded-[2rem] overflow-hidden relative"
+                      :style="{ backgroundColor: color }"
+                    >
+                      <img 
+                        :src="leftMarqueeImages[index % leftMarqueeImages.length]" 
+                        alt="" 
+                        :class="getMarqueeImageClass(index, leftMarqueeImages)"
+                      />
+                    </div>
+                  </template>
+                </div>
+              </div>
+              <div class="flex-1 h-full overflow-hidden">
+                <div class="flex flex-col gap-3 animate-scroll-down">
+                  <template v-for="(color, index) in rightMarqueeColors.concat(rightMarqueeColors)" :key="index">
+                    <div 
+                      class="flex-shrink-0 h-52 rounded-[2rem] overflow-hidden relative"
+                      :style="{ backgroundColor: color }"
+                    >
+                      <img 
+                        :src="rightMarqueeImages[index % rightMarqueeImages.length]" 
+                        alt="" 
+                        :class="getMarqueeImageClass(index, rightMarqueeImages, rightMarqueeScaleClasses)"
+                      />
+                    </div>
+                  </template>
+                </div>
+              </div>
+              <div ref="gradientRef" class="absolute bottom-0 left-0 right-0 bg-gradient-to-b from-transparent to-[#f3f4f6] pointer-events-none"></div>
+            </div>
+          </div>
         </div>
         
-        <p class="text-[#888] text-sm text-center">
-          <span class="text-white font-medium">{{ countdown }}초</span> 후 게스트로 시작해요
-        </p>
-        <p class="text-[#888] text-sm text-center mb-8">
-          로그인하면 더 많은 기능을 이용할 수 있어요
-        </p>
+        <div ref="textRef" class="text-center mb-20 relative z-10">
+          <h2 class="text-black text-lg font-medium mb-1">
+            복잡한 약속 잡기, <span class="font-bold">링크</span> 하나면 끝.
+          </h2>
+          <h1 class="text-black text-4xl font-semibold leading-tight text-center font-poppins animate-fadeInUp">
+            meetory<span class="text-[#B3E2FF] mb-4">.</span>
+          </h1>
+        </div>
         
-        <div class="w-full">
-          <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px]">
+        <div class="relative z-10">
+          <BaseButton class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px] w-full">
             <template #icon>
-              <img src="@/assets/main-page/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
+              <img src="@/assets/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
             </template>
             카카오로 시작하기
           </BaseButton>
         </div>
       </div>
-    </BottomSheet>
+    </template>
   </AppLayout>
 </template>
