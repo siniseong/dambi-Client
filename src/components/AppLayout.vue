@@ -1,4 +1,9 @@
 <script setup>
+import { useRoute } from 'vue-router'
+import BottomNav from './BottomNav.vue'
+
+const route = useRoute()
+const showNav = route.path !== '/'
 </script>
 
 <template>
@@ -6,5 +11,6 @@
     <main class="flex-1 flex flex-col px-6 pb-6">
       <slot></slot>
     </main>
+    <BottomNav v-if="showNav" />
   </div>
 </template>

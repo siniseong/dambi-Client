@@ -130,7 +130,7 @@ const getMarqueeImageClass = (index, images, scaleClasses = null) => {
         <div class="relative z-10">
           <BaseButton 
             @click="router.push('/home')"
-            class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-[#000000] text-[15px] w-full"
+            class="bg-[#FEE500] hover:bg-[#FDD835] active:bg-[#FBC02D] text-black text-[15px] w-full"
           >
             <template #icon>
               <img src="@/assets/kakao-icon.svg" alt="Kakao" class="w-5 h-5" />
@@ -142,4 +142,3 @@ const getMarqueeImageClass = (index, images, scaleClasses = null) => {
     </template>
   </AppLayout>
 </template>
-

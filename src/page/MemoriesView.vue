@@ -9,7 +9,7 @@
         <div class="mt-6 mb-5">
           <h1 class="text-xl font-semibold text-gray-400 flex items-center">
             <span class="font-poppins">meetory</span>
-            <span class="translate-y-0.5 ml-2 font-bold">약속</span>
+            <span class="translate-y-0.5 ml-2 font-bold">추천</span>
           </h1>
         </div>
 
